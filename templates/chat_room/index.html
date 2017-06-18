@@ -1,0 +1,65 @@
+{% extends 'chat_room/base.html' %}
+{% block title%}Cloud | Login{% endblock %}
+{% block login_user_active %}active{% endblock %}
+{% block navigation %}
+{% load staticfiles %}
+
+<body>
+
+    <div class="container col-sm-3">
+        <div class="header">
+            <h3>Contacts You May Know</h3>
+        </div>
+        <div class="nav nav-pills nav-stacked">
+            {% if user %}
+                {% for user in first_name %}
+                    <li>
+                        <a id="contacts" name="{{ user.email }}" href="?s={{ request.user }}&r={{ user.email }}">{{ user.first_name }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="page-header">
+        {% if msg %}
+            <p><strong><font color="#dc143c">{{ msg }}</font></strong></p>
+        {% endif %}
+    </div>
+
+    <div id="chat-body" class="panel panel-default col-sm-5">
+        <div class="panel-heading">Chat Box</div>
+        <div id="msg-list-div" class="panel-body">
+            <ul id="msg-list" class="list-group">
+                {% for obj in chat %}
+                    {% if obj.user == request.user %}
+                        <li class="text-right list-group-item">{{ obj.message }}</li>
+                    {% else %}
+                        <li class="text-left list-group-item">{{ obj.message }}</li>
+                    {% endif %}
+                {% empty %}
+                    <li class="text-right list-group-item">No messages yet!</li>
+                {% endfor %}
+                <script>
+                    var chatlist = document.getElementById('msg-list-div');
+                    chatlist.scrollTop = chatlist.scrollHeight;
+                </script>
+            </ul>
+        </div>
+    </div>
+
+    <div id="chat-box" class="col-sm-offset-9" style="bottom: 30px; position: fixed;">
+        <form id="chat-form" method="post" action="/post/">
+            <div id="chat-bottom" class="input-group">
+                <input type="text" id="chat-msg" autofocus="" name="chat-msg" class="form-control"/>
+                <span class="input-group-btn">
+                    <input class="btn btn-default" id="send" type="submit" value="Send"/>
+                </span>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script src="{% static 'chat_room/js/chat.js' %}"></script>
+
+{% endblock %}

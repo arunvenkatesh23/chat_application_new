@@ -1,0 +1,46 @@
+{% extends 'accounts/base.html' %}
+{% block title%}Chat | Login{% endblock %}
+{% block login_user_active %}active{% endblock %}
+{% block navigation %}
+<div class="container-fluid col-sm-7">
+    <div class="row">
+        <div class="col-sm-offset-6">
+            <div class="panel panel-default" style="background: transparent;">
+                <div class="panel-body">
+                    <div class="page-header">
+                        {% if msg %}
+                            <p><strong><font color="#dc143c">{{ msg }}</font></strong></p>
+                        {% endif %}
+                    </div>
+                    <form class="form-horizontal" role="form" action="{% url 'accounts:login' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {{form.non_field_errors}}
+
+                        <div class="input-group">
+                            {{form.email.errors}}
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                            <input class="form-control" autofocus="autofocus" placeholder="Email Address" id="id_email" type="email" name="email" required/>
+                        </div><br>
+
+                        <div class="input-group">
+                            {{form.password.errors}}
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input class="form-control" autofocus="autofocus" placeholder="Password" id="id_password" type="password" name="password" required/>
+                        </div><br>
+
+                        <div class="form-group">
+                            <div class="col-sm-0">
+                                <center><button type="submit" class="btn btn-success">LOGIN</button></center>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    Don't have an account? <a href="{% url 'accounts:registration' %}">Click here</a> to register.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
